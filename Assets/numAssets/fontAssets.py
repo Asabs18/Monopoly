@@ -17,6 +17,8 @@ try:
     name_label_font = money_font
     prop_name_font = pygame.font.Font("Assets\\fontAssets\\QueensidesMedium-x30zV.ttf", 34)
     prop_txt_font = pygame.font.Font("Assets\\fontAssets\\Nasa21-l23X.ttf", 26)
+    auc_card_font = pygame.font.Font("Assets\\fontAssets\\QueensidesMedium-x30zV.ttf", 18)
+    auc_card_rent_font = pygame.font.Font("Assets\\fontAssets\\QueensidesMedium-x30zV.ttf", 14)
 except FileNotFoundError:
     name_font = pygame.font.Font(None, 60)
     money_font = pygame.font.Font(None, 30)
@@ -27,6 +29,8 @@ except FileNotFoundError:
     name_label_font = pygame.font.Font(None, 30)
     prop_name_font = pygame.font.Font(None, 34)
     prop_txt_font = pygame.font.Font(None, 26)
+    auc_card_font = pygame.font.Font(None, 18)
+    auc_card_rent_font = pygame.font.Font(None, 14)
     print("Font file not found. Using default font.")
 
 NAMEFONT = name_font
@@ -38,3 +42,5 @@ INBOXFONT = inbox_font
 NAMELABELFONT = name_label_font
 PROPNAMEFONT = prop_name_font
 PROPTXTFONT = prop_txt_font
+AUCCARDFONT = auc_card_font
+AUCCARDRENTFONT = auc_card_rent_font

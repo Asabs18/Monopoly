@@ -68,6 +68,33 @@ UTILLEVELS = {
     "Own 2 Multiplier": ("If both Utilities are", "owned, rent is ", (SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.66)),
 }
 
+# SMALL VERSIONS
+
+#List of coords for rent information on property buy cards 
+PROPLEVELS_SMALL = {
+    "Base": ("Rent", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.46)), 
+    "Color Set": ("Rent with Color Set", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.485)), 
+    "House 1": ("Rent with 1 House(s)", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.51)), 
+    "House 2": ("Rent with 2 House(s)", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.535)), 
+    "House 3": ("Rent with 3 House(s)", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.56)), 
+    "House 4": ("Rent with 4 House(s)", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.585)), 
+    "Hotel": ("Rent with Hotel", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.61)),
+    }
+
+#List of coords for rent information on railroad buy cards
+RAILROADLEVELS_SMALL = {
+    "Base": ("Rent", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.54)),
+    "Own 2": ("Rent with 1 Railroad", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.56)),
+    "Own 3": ("Rent with 2 Railroads", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.58)),
+    "Own 4": ("Rent with 3 Railroads", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.6)),
+}
+
+#Liist of coords for rent information on utility buy cards
+UTILLEVELS_SMALL = {
+    "Base": ("If one Utility is owned,\nrent is ", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.54)),
+    "Own 2 Multiplier": ("If both Utilities are\nowned, rent is ", (SCREEN_WIDTH * 0.6, SCREEN_HEIGHT * 0.58)),
+}
+
 #Board Coords for players, tuples with coords for (p1, p2, p3, p4)
 BOARDCOORDS = {
     "Go":                       ((SCREEN_WIDTH * 0.72, SCREEN_HEIGHT * 0.84), 

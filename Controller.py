@@ -75,6 +75,9 @@ class Game:
         self.addPlayer("Aidan", 0, 2)
         self.addPlayer("Piv", 1, 3)
 
+        self.players[0].move(0)
+        self.diceRolled = True
+
         self.start()
 
         running = True
@@ -124,6 +127,12 @@ class Game:
             if self.nxtTurnBtn.isClicked(pygame.mouse.get_pos()):
                 self.updateTurn()
             if not self.currTurnLoc == None:
+                if isinstance(self.currTurnLoc, Property):
+                    if self.currTurnLoc.auction != None:
+                        if self.currTurnLoc.auction.bidBtn.isClicked(pygame.mouse.get_pos()):
+                            self.currTurnLoc.auction.bidBtnAction()
+                        elif self.currTurnLoc.auction.withdrawBtn.isClicked(pygame.mouse.get_pos()):
+                            self.currTurnLoc.auction.withdrawBtnAction()
                 if self.currTurnLoc.canBuy(self.currTurn):
                     if self.currTurnLoc.buyBtn.isClicked(pygame.mouse.get_pos()):
                         self.currTurnLoc.buyBtnAction(self.currTurn)

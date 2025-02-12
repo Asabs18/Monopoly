@@ -91,6 +91,12 @@ class Property(Cell):
         player.money -= self.price
         player.properties.append(self)
 
+    # Buy the property
+    def buyAuc(self, player, price):
+        self.isOwned = True
+        player.money -= price
+        player.properties.append(self)
+
     # Charge rent to the player
     def charge(self, player):
         player.money -= self.profitInfo[self.currProfit]
@@ -124,6 +130,11 @@ class Property(Cell):
     # Abstract method to display the property's UI
     @abstractmethod
     def display(self):
+        pass
+
+    # Abstract method for small version of card
+    @abstractmethod
+    def smallCard(self, x, y, width, height):
         pass
 
 
@@ -193,6 +204,31 @@ class ColorSet(Property):
             self.buyBtn.draw()
             self.auctionBtn.draw()
 
+    def smallCard(self, x, y, width, height):
+        # Draw window
+        pygame.draw.rect(self.screen, WHITE, (x - 10, y - 10, width + 20, height + 20))
+        pygame.draw.rect(self.screen, BLACK, (x - 2, y - 2, width + 4, height + 4))
+        pygame.draw.rect(self.screen, WHITE, (x, y, width, height))
+
+        # Draw color background
+        pygame.draw.rect(self.screen, BLACK, (x + 3, y + 3, width - 6, (height // 5) - 6))
+        pygame.draw.rect(self.screen, self.color, (x + 5, y + 5, width - 10, (height // 5) - 10))
+
+        textColor = BLACK
+
+        # Property Name
+        drawText(self.screen, self.name, AUCCARDFONT, textColor, (x + AUC_CARD_NAME_X, y + + AUC_CARD_NAME_Y))
+
+        # Price 
+        drawText(self.screen, f"Price: ${self.price}", AUCCARDFONT, textColor, (x + AUC_CARD_PRICE_X, y + AUC_CARD_PRICE_Y))
+       
+        # Rent levels
+        for level in PROPLEVELS_SMALL.keys():
+            price = self.getRent(level)
+            levelData = PROPLEVELS_SMALL[level]
+            drawText(self.screen, f"{levelData[0]} ${price}", AUCCARDRENTFONT, textColor, levelData[1])
+
+
     # Get coordinates for displaying houses/hotels
     def getHouseCoords(self):
         match self.currProfit:
@@ -258,6 +294,31 @@ class Railroad(Property):
             self.buyBtn.draw()
             self.auctionBtn.draw()
 
+    def smallCard(self, x, y, width, height):
+        # Draw window
+        pygame.draw.rect(self.screen, WHITE, (x - 10, y - 10, width + 20, height + 20))
+        pygame.draw.rect(self.screen, BLACK, (x - 2, y - 2, width + 4, height + 4))
+        pygame.draw.rect(self.screen, WHITE, (x, y, width, height))
+
+        # Property Name
+        drawText(self.screen, self.name, AUCCARDFONT, BLACK, (x + AUC_CARD_NAME_X, y + AUC_CARD_NAME_Y))
+
+        # Name Underline
+        pygame.draw.line(self.screen, BLACK, SMALL_CARD_LINE_START, SMALL_CARD_LINE_END, 2)
+
+        # Price 
+        drawText(self.screen, f"Price: ${self.price}", AUCCARDFONT, BLACK, (x + AUC_CARD_PRICE_X, y + AUC_CARD_PRICE_Y + 80))
+       
+        # Image
+        imgRect = RAILROADIMGSML.get_rect()
+        imgRect.center = (RAIL_IMG_SML_X, RAIL_IMG_SML_Y)
+        self.screen.blit(RAILROADIMGSML, imgRect)
+
+        # Rent levels
+        for level in RAILROADLEVELS_SMALL.keys():
+            price = self.getRent(level)
+            levelData = RAILROADLEVELS_SMALL[level]
+            drawText(self.screen, f"{levelData[0]} ${price}", AUCCARDRENTFONT, BLACK, levelData[1])
 
 # Utility class inherits from Property
 class Utility(Property):
@@ -310,6 +371,32 @@ class Utility(Property):
             # Buttons
             self.buyBtn.draw()
             self.auctionBtn.draw()
+
+    def smallCard(self, x, y, width, height):
+        # Draw window
+        pygame.draw.rect(self.screen, WHITE, (x - 10, y - 10, width + 20, height + 20))
+        pygame.draw.rect(self.screen, BLACK, (x - 2, y - 2, width + 4, height + 4))
+        pygame.draw.rect(self.screen, WHITE, (x, y, width, height))
+
+        # Property Name
+        drawText(self.screen, self.name, AUCCARDFONT, BLACK, (x + AUC_CARD_NAME_X, y + AUC_CARD_NAME_Y))
+
+        # Name Underline
+        pygame.draw.line(self.screen, BLACK, SMALL_CARD_LINE_START, SMALL_CARD_LINE_END, 2)
+
+        # Price 
+        drawText(self.screen, f"Price: ${self.price}", AUCCARDFONT, BLACK, (x + AUC_CARD_PRICE_X, y + AUC_CARD_PRICE_Y + 80))
+       
+        # Image
+        imgRect = UTILIMGSSML[self.name].get_rect()
+        imgRect.center = (UTIL_IMG_SML_X, UTIL_IMG_SML_Y)
+        self.screen.blit(UTILIMGSSML[self.name], imgRect)
+
+        # Rent levels
+        for level in UTILLEVELS_SMALL.keys():
+            price = self.getRent(level)
+            levelData = UTILLEVELS_SMALL[level]
+            drawTextMultiLines(self.screen, f"{levelData[0]} ${price}", AUCCARDRENTFONT, BLACK, levelData[1], 15)
 
 
 # FreeParking class inherits from Cell
@@ -542,10 +629,7 @@ class Card(Cell):
             pygame.draw.line(self.screen, textColor, NAME_LN_START, NAME_LN_END, 2)
 
             # Description
-            text_y = JAIL_TXT_Y
-            for line in self.currCard.description.splitlines():
-                drawText(self.screen, line, PROPTXTFONT, textColor, (JAIL_TXT_X, text_y))
-                text_y += 30
+            drawTextMultiLines(self.screen, self.currCard.description, PROPTXTFONT, textColor, (JAIL_TXT_X, JAIL_TXT_Y), 30)
 
             # Buttons
             self.okBtn.draw()

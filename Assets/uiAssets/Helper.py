@@ -8,6 +8,12 @@ def drawText(screen, text, font, color, pos):
     textRect.center = (pos[0], pos[1])
     screen.blit(textSurface, textRect)
 
+def drawTextMultiLines(screen, text, font, color, pos, spacing):
+    text_y = pos[1]
+    for line in text.splitlines():
+        drawText(screen, line, font, color, (pos[0], text_y))
+        text_y += spacing
+
 
 #Rounded Rect Helper Function:
 def draw_rounded_rect(surface, color, rect, radius):

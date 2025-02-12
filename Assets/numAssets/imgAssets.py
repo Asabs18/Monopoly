@@ -107,6 +107,11 @@ railroad_img = pygame.image.load("Assets/imgAssets/cardAssets/railroad.png").con
 railroad_img = pygame.transform.smoothscale(railroad_img.convert_alpha(), (RAIL_IMG_WIDTH, RAIL_IMG_HEIGHT))
 RAILROADIMG = railroad_img
 
+#Railroad card img (SMALL)
+railroad_imgSML = pygame.image.load("Assets/imgAssets/cardAssets/railroad.png").convert_alpha()
+railroad_imgSML = pygame.transform.smoothscale(railroad_img.convert_alpha(), (RAIL_IMG_WIDTH_SML, RAIL_IMG_HEIGHT_SML))
+RAILROADIMGSML = railroad_imgSML
+
 #Util card img
 electric_company_img = pygame.image.load("Assets/imgAssets/cardAssets/electric_company.png").convert_alpha()
 electric_company_img = pygame.transform.smoothscale(electric_company_img.convert_alpha(), (UTIL_IMG_WIDTH, UTIL_IMG_HEIGHT))
@@ -119,6 +124,20 @@ WATERWORKSIMG = waterworks_img
 UTILIMGS = {
     "Electric Company": ELECTRICCOMPANYIMG,
     "Water Works": WATERWORKSIMG
+}
+
+#Util card img (SMALL)
+electric_company_imgSML = pygame.image.load("Assets/imgAssets/cardAssets/electric_company.png").convert_alpha()
+electric_company_imgSML = pygame.transform.smoothscale(electric_company_img.convert_alpha(), (UTIL_IMG_WIDTH_SML, UTIL_IMG_HEIGHT_SML))
+ELECTRICCOMPANYIMGSML = electric_company_imgSML
+
+waterworks_imgSML = pygame.image.load("Assets/imgAssets/cardAssets/waterworks.png").convert_alpha()
+waterworks_imgSML = pygame.transform.smoothscale(waterworks_img.convert_alpha(), (UTIL_IMG_WIDTH_SML, UTIL_IMG_HEIGHT_SML))
+WATERWORKSIMGSML = waterworks_imgSML
+
+UTILIMGSSML = {
+    "Electric Company": ELECTRICCOMPANYIMGSML,
+    "Water Works": WATERWORKSIMGSML
 }
 
 #Tax card img
