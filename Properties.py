@@ -39,6 +39,9 @@ class Cell(ABC):
     # Check if the cell can be bought (default is False)
     def canBuy(self, player):
         return False
+    
+    def canCharge(self, player):
+        return False
 
     # Abstract method to handle player landing on the cell
     @abstractmethod
@@ -68,8 +71,8 @@ class Property(Cell):
         self.auction = None
 
         # Buttons for buying and auctioning the property
-        self.buyBtn = Button(self.screen, "Buy", (BUY_BTN_X, BUY_BTN_Y, BUY_BTN_WIDTH, BUY_BTN_HEIGHT), GREEN)
-        self.auctionBtn = Button(self.screen, "Auction", (AUCT_BTN_X, AUCT_BTN_Y, AUCT_BTN_WIDTH, AUCT_BTN_HEIGHT), RED)
+        self.buyBtn = Button(self.screen, "Buy", BTNFONT, (BUY_BTN_X, BUY_BTN_Y, BUY_BTN_WIDTH, BUY_BTN_HEIGHT), GREEN)
+        self.auctionBtn = Button(self.screen, "Auction", BTNFONT, (AUCT_BTN_X, AUCT_BTN_Y, AUCT_BTN_WIDTH, AUCT_BTN_HEIGHT), RED)
 
     # Override from Cell: Check if the player can buy the property
     def canBuy(self, player):
@@ -99,11 +102,11 @@ class Property(Cell):
 
     # Charge rent to the player
     def charge(self, player):
-        player.money -= self.profitInfo[self.currProfit]
+        player.money -= self.getRent(self.currProfit)
 
     # Check if the player can be charged rent
     def canCharge(self, player):
-        return self.isOwned and player.money >= self.profitInfo[self.currProfit]
+        pass
 
     # Handle buy button action
     def buyBtnAction(self, player):
@@ -137,6 +140,10 @@ class Property(Cell):
     def smallCard(self, x, y, width, height):
         pass
 
+    @abstractmethod
+    def update(self):
+        pass
+
 
 # ColorSet class inherits from Property
 class ColorSet(Property):
@@ -148,10 +155,14 @@ class ColorSet(Property):
         self.currProfit = "Base"  # Current profit level (e.g., Base, House 1, etc.)
         self.rents = RENTPRICES[self.name]  # Rent prices for different levels
         self.houseCoords = HOUSECOORDS[self.name]  # Coordinates for displaying houses
+        self.numHouses = 0  # Number of houses built on the property
 
     # Check if buildings can be built on the property
     def canBuild(self):
         return self.isOwned and self.currProfit != "Hotel"
+    
+    def canCharge(self, player):
+        return self.isOwned and player.money >= self.getRent(self.currProfit) and self not in player.properties
 
     # Get rent based on the property's level
     def getRent(self, level):
@@ -228,21 +239,27 @@ class ColorSet(Property):
             levelData = PROPLEVELS_SMALL[level]
             drawText(self.screen, f"{levelData[0]} ${price}", AUCCARDRENTFONT, textColor, levelData[1])
 
-
-    # Get coordinates for displaying houses/hotels
-    def getHouseCoords(self):
-        match self.currProfit:
-            case "House 1":
-                return self.houseCoords[0]
-            case "House 2":
-                return self.houseCoords[1]
-            case "House 3":
-                return self.houseCoords[2]
-            case "House 4":
-                return self.houseCoords[3]
-            case "Hotel":
-                return self.houseCoords[4]
-
+    def update(self, players):
+        for player in players:
+            if player.getColorSets() != None:
+                if self.color in player.getColorSets():
+                    self.currProfit = "Color Set"
+                else:
+                    self.currProfit = "Base"
+        
+        match self.numHouses:
+            case 1:
+                self.currProfit = "House 1"
+            case 2:
+                self.currProfit = "House 2"
+            case 3:
+                self.currProfit = "House 3"
+            case 4:
+                self.currProfit = "House 4"
+            case 5:
+                self.currProfit = "Hotel"
+            case _:
+                pass
 
 # Railroad class inherits from Property
 class Railroad(Property):
@@ -250,15 +267,18 @@ class Railroad(Property):
         super().__init__(name, screen)
 
         self.currProfit = "Base"  # Current profit level
-        self.profitInfo = RAILROADRENT  # Rent information for railroads
+        self.rents = RAILROADRENT  # Rent information for railroads
 
     # Railroads cannot have buildings
     def canBuild(self):
         return False
+    
+    def canCharge(self, player):
+        return self.isOwned and player.money >= self.getRent(self.currProfit) and self not in player.properties
 
     # Get rent based on the number of railroads owned
     def getRent(self, level):
-        return self.profitInfo[level]
+        return self.rents[level]
 
     # Display the railroad's UI
     def display(self):
@@ -320,21 +340,45 @@ class Railroad(Property):
             levelData = RAILROADLEVELS_SMALL[level]
             drawText(self.screen, f"{levelData[0]} ${price}", AUCCARDRENTFONT, BLACK, levelData[1])
 
+    def update(self, players):
+        railroadCount = 0
+        for player in players:
+            if self in player.properties:
+                for prop in player.properties:
+                    if isinstance(prop, Railroad):
+                        railroadCount += 1
+                break
+        
+        match railroadCount:
+            case 1:
+                self.currProfit = "Base"
+            case 2:
+                self.currProfit = "Own 2"
+            case 3:
+                self.currProfit = "Own 3"
+            case 4:
+                self.currProfit = "Own 4"
+            case _:
+                pass
+
 # Utility class inherits from Property
 class Utility(Property):
     def __init__(self, name, screen):
         super().__init__(name, screen)
 
         self.currProfit = "Base"  # Current profit level
-        self.profitInfo = UTILRENT  # Rent information for utilities
+        self.rents = UTILRENT  # Rent information for utilities
 
     # Utilities cannot have buildings
     def canBuild(self):
         return False
+    
+    def canCharge(self, player):
+        return self.isOwned and player.money >= self.getRent(self.currProfit) and self not in player.properties
 
     # Get rent based on the dice roll
     def getRent(self, level):
-        return self.profitInfo[level]
+        return self.rents[level]
 
     # Display the utility's UI
     def display(self):
@@ -398,6 +442,22 @@ class Utility(Property):
             levelData = UTILLEVELS_SMALL[level]
             drawTextMultiLines(self.screen, f"{levelData[0]} ${price}", AUCCARDRENTFONT, BLACK, levelData[1], 15)
 
+    def update(self, players):
+        utilityCount = 0
+        for player in players:
+            if self in player.properties:
+                for prop in player.properties:
+                    if isinstance(prop, Utility):
+                        utilityCount += 1
+                break
+
+        match utilityCount:
+            case 1:
+                self.currProfit = "Base"
+            case 2:
+                self.currProfit = "Own 2"
+            case _:
+                pass
 
 # FreeParking class inherits from Cell
 class FreeParking(Cell):
@@ -405,7 +465,7 @@ class FreeParking(Cell):
         super().__init__("Free Parking", screen)
 
         self.value = 0  # Amount of money in the Free Parking pot
-        self.okBtn = Button(self.screen, "Ok", (OK_BTN_X, OK_BTN_Y, OK_BTN_WIDTH, OK_BTN_HEIGHT), GREEN)
+        self.okBtn = Button(self.screen, "Ok", BTNFONT, (OK_BTN_X, OK_BTN_Y, OK_BTN_WIDTH, OK_BTN_HEIGHT), GREEN)
 
     # Handle player landing on Free Parking
     def landedOn(self, player):
@@ -459,7 +519,7 @@ class GoToJail(Cell):
     def __init__(self, screen):
         super().__init__("Go To Jail", screen)
 
-        self.okBtn = Button(self.screen, "Ok", (OK_BTN_X, OK_BTN_Y, OK_BTN_WIDTH, OK_BTN_HEIGHT), GREEN)
+        self.okBtn = Button(self.screen, "Ok", BTNFONT, (OK_BTN_X, OK_BTN_Y, OK_BTN_WIDTH, OK_BTN_HEIGHT), GREEN)
 
     # Handle player landing on Go To Jail
     def landedOn(self, player):
@@ -504,7 +564,7 @@ class Jail(Cell):
     def __init__(self, screen):
         super().__init__("In Jail", screen)
 
-        self.payBtn = Button(screen, "Pay", (JAIL_TXT_X, JAIL_TXT_Y + 150, PAY_BTN_WIDTH, PAY_BTN_HEIGHT), GREEN)
+        self.payBtn = Button(screen, "Pay", BTNFONT, (JAIL_TXT_X, JAIL_TXT_Y + 150, PAY_BTN_WIDTH, PAY_BTN_HEIGHT), GREEN)
 
     # Handle player landing in jail
     def landedOn(self, player):
@@ -544,7 +604,7 @@ class Tax(Cell):
         super().__init__(name, screen)
 
         self.price = TAXPRICES[self.name]  # Tax amount
-        self.okBtn = Button(self.screen, "Ok", (OK_BTN_X, OK_BTN_Y, OK_BTN_WIDTH, OK_BTN_HEIGHT), GREEN)
+        self.okBtn = Button(self.screen, "Ok", BTNFONT, (OK_BTN_X, OK_BTN_Y, OK_BTN_WIDTH, OK_BTN_HEIGHT), GREEN)
 
     # Handle player landing on a tax space
     def landedOn(self, player):
@@ -601,7 +661,7 @@ class Card(Cell):
 
         self.createDeck()  # Create the card deck
         self.currCard = self.deck.deal()  # Draw the current card
-        self.okBtn = Button(self.screen, "Ok", (JAIL_TXT_X, JAIL_TXT_Y + 150, PAY_BTN_WIDTH, PAY_BTN_HEIGHT), GREEN)
+        self.okBtn = Button(self.screen, "Ok", BTNFONT, (JAIL_TXT_X, JAIL_TXT_Y + 150, PAY_BTN_WIDTH, PAY_BTN_HEIGHT), GREEN)
 
     # Handle player landing on a card space
     def landedOn(self, player):

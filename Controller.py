@@ -6,6 +6,7 @@ from Player import *
 from Dice import *
 from Cards import *
 from Properties import *
+from BuildMenu import *
 
 from Assets.numAssets.colorAssets import *
 from Assets.numAssets.displayAssets import *
@@ -19,6 +20,12 @@ from Assets.uiAssets.Board import *
 pygame.init()
 
 
+#TODO: Fix dice double not repeating (and add three doubles send to jail)
+#TODO: Fix jail, nothing works lmai
+#TODO: Figure out why chance and com chest sometimes dont display/action
+#TODO: Implement bankruptcy and trading
+#TODO: Fix style errors like order of build house names, colors etc make everything look goooood
+
 #Main Game loop class
 class Game:
     def __init__(self, screen):
@@ -29,6 +36,9 @@ class Game:
         self.diceSet = DiceSet(screen)
         self.startupWindow = StartupWindow(self.screen, ST_PIECE_IMGS)
         self.boardSpaces = Cells(self.screen)
+
+        #Home Building
+        self.buildMenu = BuildMenu(self.screen)
 
         #List of all players and current turn player
         self.players = []
@@ -43,7 +53,7 @@ class Game:
         #self.jailWindow = InJailWindow(self.screen)
 
         #UI Assets
-        self.nxtTurnBtn = Button(self.screen, "End Turn", (NXT_TURN_BTN_X, NXT_TURN_BTN_Y, NXT_TURN_BTN_WIDTH, NXT_TURN_BTN_HEIGHT), RED)
+        self.nxtTurnBtn = Button(self.screen, "End Turn", BTNFONT, (NXT_TURN_BTN_X, NXT_TURN_BTN_Y, NXT_TURN_BTN_WIDTH, NXT_TURN_BTN_HEIGHT), RED)
 
         #Window Title
         pygame.display.set_caption("Monopoly")
@@ -65,6 +75,8 @@ class Game:
             if not self.currTurn == None:
                 self.currTurnLoc = self.boardSpaces.properties[self.currTurn.location[0]]
 
+            self.update()
+
             # Update game state
             self.display()
 
@@ -75,8 +87,11 @@ class Game:
         self.addPlayer("Aidan", 0, 2)
         self.addPlayer("Piv", 1, 3)
 
-        self.players[0].move(0)
-        self.diceRolled = True
+        #self.players[0].move(0)
+        #self.diceRolled = True
+        self.boardSpaces.properties["Connecticut Avenue"].buy(self.players[0])
+        self.boardSpaces.properties["Vermont Avenue"].buy(self.players[0])
+        self.boardSpaces.properties["Oriental Avenue"].buy(self.players[0])
 
         self.start()
 
@@ -94,6 +109,8 @@ class Game:
             #TODO: Move outside loop
             if not self.currTurn == None:
                 self.currTurnLoc = self.boardSpaces.properties[self.currTurn.location[0]]
+
+            self.update()
 
             # Update game state
             self.display()
@@ -127,6 +144,12 @@ class Game:
             if self.nxtTurnBtn.isClicked(pygame.mouse.get_pos()):
                 self.updateTurn()
             if not self.currTurnLoc == None:
+                if self.buildMenu.activateBtn.isClicked(pygame.mouse.get_pos()):
+                    self.buildMenu.activateBtnAction()
+                if self.buildMenu.displayWin:
+                    if self.buildMenu.closeBtn.isClicked(pygame.mouse.get_pos()):
+                        self.buildMenu.closeBtnAction()
+                    self.buildMenu.checkBtnClicks(self.currTurn, pygame.mouse.get_pos())
                 if isinstance(self.currTurnLoc, Property):
                     if self.currTurnLoc.auction != None:
                         if self.currTurnLoc.auction.bidBtn.isClicked(pygame.mouse.get_pos()):
@@ -150,6 +173,19 @@ class Game:
                 elif isinstance(self.currTurnLoc, Jail):
                     if self.currTurnLoc.payBtn.isClicked(pygame.mouse.get_pos()):
                         self.currTurnLoc.payBtnAction(self.currTurn)
+                else:
+                    pass
+
+    def update(self):
+        if isinstance(self.currTurnLoc, Property):
+            self.currTurnLoc.update(self.players)
+            if self.currTurnLoc.show:
+                if self.currTurnLoc.canCharge(self.currTurn):
+                    self.currTurnLoc.charge(self.currTurn)
+                    self.currTurnLoc.show = False
+                elif self.currTurnLoc in self.currTurn.properties:
+                    self.currTurnLoc.show = False
+    
     #Startup window UI input handling
     def handleStartupWinInput(self):
         #Handles close button click and invalid cases
@@ -267,6 +303,9 @@ class Game:
         #Display startup window if needed 
         if self.startupWindow.isStartup:
             self.startupWindow.display()
+
+        if self.currTurn != None:
+            self.buildMenu.display(self.players, self.currTurn)
 
         #Display auction if running
         for prop in self.boardSpaces.properties.values():

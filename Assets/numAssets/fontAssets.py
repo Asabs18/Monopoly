@@ -19,6 +19,8 @@ try:
     prop_txt_font = pygame.font.Font("Assets\\fontAssets\\Nasa21-l23X.ttf", 26)
     auc_card_font = pygame.font.Font("Assets\\fontAssets\\QueensidesMedium-x30zV.ttf", 18)
     auc_card_rent_font = pygame.font.Font("Assets\\fontAssets\\QueensidesMedium-x30zV.ttf", 14)
+    glyph_font = pygame.font.SysFont("segoeuiemoji", 70)
+    plus_min_font = pygame.font.SysFont("segoeuiemoji", 18)
 except FileNotFoundError:
     name_font = pygame.font.Font(None, 60)
     money_font = pygame.font.Font(None, 30)
@@ -31,6 +33,8 @@ except FileNotFoundError:
     prop_txt_font = pygame.font.Font(None, 26)
     auc_card_font = pygame.font.Font(None, 18)
     auc_card_rent_font = pygame.font.Font(None, 14)
+    glyph_font = pygame.font.SysFont("segoeuiemoji", 50)
+    plus_min_font = pygame.font.SysFont("segoeuiemoji", 18)
     print("Font file not found. Using default font.")
 
 NAMEFONT = name_font
@@ -44,3 +48,5 @@ PROPNAMEFONT = prop_name_font
 PROPTXTFONT = prop_txt_font
 AUCCARDFONT = auc_card_font
 AUCCARDRENTFONT = auc_card_rent_font
+GLYPHFONT = glyph_font
+PLUSMINFONT = plus_min_font

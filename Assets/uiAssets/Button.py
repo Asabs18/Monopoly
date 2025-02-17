@@ -3,14 +3,14 @@ import pygame.font
 from Assets.numAssets.fontAssets import *
 
 class Button:
-	def __init__(self, screen, msg, rect, rgb):
+	def __init__(self, screen, msg, font, rect, rgb):
 		self.screen = screen
 		self.screen_rect = self.screen.get_rect()
 
 		self.width, self.height = rect[2], rect[3]
 		self.button_color = rgb
 		self.text_color = (255, 255, 255)
-		self.font = BTNFONT
+		self.font = font
 
 		self.rect = pygame.Rect(0, 0, self.width, self.height)
 		self.rect.center = (rect[0], rect[1])

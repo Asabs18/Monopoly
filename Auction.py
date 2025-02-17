@@ -24,8 +24,8 @@ class Auction:
 
         self.currTurn = self.players[0] #Auctions always start with player 1
 
-        self.bidBtn = Button(self.screen, "Bid", (BID_BTN_X, BID_BTN_Y, AUC_BTN_WIDTH, AUC_BTN_HEIGHT), GREEN)
-        self.withdrawBtn = Button(self.screen, "Withdraw", (WITHDRAW_BTN_X, WITHDRAW_BTN_Y, AUC_BTN_WIDTH, AUC_BTN_HEIGHT), RED)
+        self.bidBtn = Button(self.screen, "Bid", PIECEFONT, (BID_BTN_X, BID_BTN_Y, AUC_BTN_WIDTH, AUC_BTN_HEIGHT), GREEN)
+        self.withdrawBtn = Button(self.screen, "Withdraw", PIECEFONT, (WITHDRAW_BTN_X, WITHDRAW_BTN_Y, AUC_BTN_WIDTH, AUC_BTN_HEIGHT), RED)
 
     def start(self):
         self.isRunning = True

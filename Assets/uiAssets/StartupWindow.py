@@ -19,8 +19,8 @@ class StartupWindow:
         self.isStartup = True
 
         #Define ui components
-        self.closeBtn = Button(self.screen, "Close", (CLOSE_BTN_X, CLOSE_BTN_Y, CLOSE_BTN_WIDTH, CLOSE_BTN_HEIGHT), RED)
-        self.addBtn = Button(self.screen, "Add", (ADD_PLAYER_BTN_X, ADD_PLAYER_BTN_Y, ADD_PLAYER_BTN_WIDTH, ADD_PLAYER_BTN_HEIGHT), GREEN)
+        self.closeBtn = Button(self.screen, "Close", BTNFONT, (CLOSE_BTN_X, CLOSE_BTN_Y, CLOSE_BTN_WIDTH, CLOSE_BTN_HEIGHT), RED)
+        self.addBtn = Button(self.screen, "Add", BTNFONT, (ADD_PLAYER_BTN_X, ADD_PLAYER_BTN_Y, ADD_PLAYER_BTN_WIDTH, ADD_PLAYER_BTN_HEIGHT), GREEN)
         self.nameInputBox = TextBox((NAME_INPUT_X, NAME_INPUT_Y, NAME_INPUT_WIDTH, NAME_INPUT_HEIGHT))
         
         #Define Piece array

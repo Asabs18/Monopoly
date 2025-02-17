@@ -1,6 +1,8 @@
 import pygame
 import pygame.gfxdraw
 
+from Properties import *
+
 from Assets.numAssets.displayAssets import *
 from Assets.numAssets.colorAssets import *
 from Assets.numAssets.fontAssets import *
@@ -12,6 +14,7 @@ from Assets.uiAssets.Helper import *
 
 pygame.init()
 
+#TODO: Implement bankruptcy
 class Player:
     def __init__(self, screen, name, id, piece):
         self.screen = screen
@@ -26,10 +29,7 @@ class Player:
         self.money = 1500
         self.getOutOfJailFreeCards = 0
         self.properties = []
-        self.buildings = {
-            "houses": [],
-            "hotels": [],
-        }
+        self.buildings = {}
 
         self.isTurn = False
         self.inJail = False
@@ -118,6 +118,47 @@ class Player:
         else:
             self.money = 0
             #TODO: special case bankruptcy
+
+    def build(self, prop):
+        if prop not in self.buildings.keys():
+            self.buildings[prop] = 0
+        if self.buildings[prop] < 5 and self.money >= prop.buildCost:
+            self.buildings[prop] += 1
+            prop.numHouses += 1
+            self.charge(prop.buildCost)
+
+    def getColorSets(self):
+        colorSets = []
+
+        count = { BROWN: 0, LIGHT_BLUE: 0, PURPLE: 0, ORANGE: 0, RED: 0, YELLOW: 0, GREEN: 0, DARK_BLUE: 0 }
+
+        for prop in self.properties:
+            if isinstance(prop, ColorSet):
+                count[prop.color] += 1
+
+        for colorSet in count.keys():
+            if count[colorSet] >= 3:
+                colorSets.append(colorSet)
+            elif colorSet == BROWN or colorSet == DARK_BLUE:
+                if count[colorSet] >= 2:
+                    colorSets.append(colorSet)
+
+        if colorSets == []:
+            return None
+        return colorSets
+
+    def drawHouses(self):
+        for building in self.buildings.keys():
+            for i in range(self.buildings[building]):
+                self.drawHouse(building, i)
+
+    def drawHouse(self, building, index):
+        if building.isTagHorz:
+            draw_rounded_rect(self.screen, self.color, (building.tagPos[0] + (PROP_TAG_WIDTH * index), building.tagPos[1], PROP_TAG_WIDTH, PROP_TAG_HEIGHT), 5)
+        else:
+            draw_rounded_rect(self.screen, self.color, (building.tagPos[0], building.tagPos[1] + (PROP_TAG_WIDTH * index), PROP_TAG_HEIGHT, PROP_TAG_WIDTH), 5)
+            
+
     
 
 
