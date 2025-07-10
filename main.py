@@ -1,8 +1,8 @@
 import pygame
 
-from Controller import Game
+from src.game.Controller import Game
 
-from Assets.numAssets.displayAssets import *
+from src.config.displayAssets import *
 
 # Initialize Pygame
 pygame.init()
@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 game = Game(screen)
 
 # Run Game
-game.testLoop()
+game.loop()
 
 # Quit Pygame
 pygame.quit()
