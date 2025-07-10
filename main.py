@@ -4,6 +4,12 @@ from src.game.Controller import Game
 
 from src.config.displayAssets import *
 
+#Refactor/comment notes (Claude): 
+# src/game: complete
+# src/ui/components: Board.py & Button.py complete
+# rest: incomplete
+
+
 # Initialize Pygame
 pygame.init()
 
