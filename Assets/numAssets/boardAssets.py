@@ -65,7 +65,7 @@ RAILROADLEVELS = {
 #Liist of coords for rent information on utility buy cards
 UTILLEVELS = {
     "Base": ("If one Utility is owned,", "rent is ", (SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.56)),
-    "Own 2 Multiplier": ("If both Utilities are", "owned, rent is ", (SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.66)),
+    "Own 2": ("If both Utilities are", "owned, rent is ", (SCREEN_WIDTH * 0.5, SCREEN_HEIGHT * 0.66)),
 }
 
 # SMALL VERSIONS
@@ -474,7 +474,7 @@ RAILROADRENT = {
 #Dictionary of all rent levels for all utilities (Base, Own 2 Multiplier)
 UTILRENT = {
     "Base": 4,
-    "Own 2 Multiplier": 10,
+    "Own 2": 10,
 }
 
 #List of descriptions for chance deck

@@ -18,7 +18,7 @@ class BuildMenu:
         self.displayActivateBtn = False
         self.displayWin = False
 
-        self.activateBtn = Button(self.screen, "🏠", GLYPHFONT, (ACTIVATE_BTN_X, ACTIVATE_BTN_Y, ACTIVATE_BTN_WIDTH, ACTIVATE_BTN_HEIGHT), GREEN)
+        self.activateBtn = Button(self.screen, "🏠", GLYPHFONT, (BUILD_ACTIVATE_BTN_X, BUILD_ACTIVATE_BTN_Y, ACTIVATE_BTN_WIDTH, ACTIVATE_BTN_HEIGHT), GREEN)
         self.closeBtn = Button(self.screen, "Close", PIECEFONT, (CLOSE_BTN_X, CLOSE_BTN_Y, CLOSE_BTN_WIDTH, CLOSE_BTN_HEIGHT), RED)
         self.buildBtns = {}
 
@@ -67,7 +67,6 @@ class BuildMenu:
             drawText(self.screen, "Build", PIECEFONT, WHITE, (BUILD_LABEL_X, BUILD_LABEL_Y))
 
 
-    #TODO: NEXT: fix house coords memberdata (include horz Bool) and fix rect prints to correct coords and colors etc
     def drawHouses(self, players):
         for player in players:
             for prop in player.properties:
@@ -143,4 +142,5 @@ class BuildMenu:
         player.build(prop)
 
     def minusBtnAction(self, player, btn):
-        pass
+        prop = self.getPropFromBtn(btn)
+        player.sellHouse(prop)

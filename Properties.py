@@ -64,6 +64,8 @@ class Property(Cell):
         self.mortgagePrice = MORTGAGEPRICES[self.name]  # Mortgage price
         self.unmortgagePirce = UNMORTGAGEPRICES[self.name]  # Unmortgage price
 
+        self.isMortgaged = False  # Whether the property is mortgaged
+
         # Position and orientation of the property tag
         self.tagPos = TAGCOORDS[self.name][0]
         self.isTagHorz = TAGCOORDS[self.name][1]
@@ -97,12 +99,13 @@ class Property(Cell):
     # Buy the property
     def buyAuc(self, player, price):
         self.isOwned = True
-        player.money -= price
+        player.charge(price)
         player.properties.append(self)
 
     # Charge rent to the player
     def charge(self, player):
-        player.money -= self.getRent(self.currProfit)
+        if not self.isMortgaged:
+            player.money -= self.getRent(self.currProfit)
 
     # Check if the player can be charged rent
     def canCharge(self, player):
@@ -214,6 +217,19 @@ class ColorSet(Property):
             # Buttons
             self.buyBtn.draw()
             self.auctionBtn.draw()
+
+    def builtEvenly(self, player):
+        colorSet = []
+        for prop in player.properties:
+            if isinstance(prop, ColorSet):
+                if prop.color == self.color:
+                    colorSet.append(prop)
+
+        if self.numHouses <= colorSet[0].numHouses and self.numHouses <= colorSet[1].numHouses:
+            return True
+        return False
+            
+
 
     def smallCard(self, x, y, width, height):
         # Draw window

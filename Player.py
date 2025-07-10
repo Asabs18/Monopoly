@@ -36,6 +36,8 @@ class Player:
 
         self.jailTurns = 0
 
+        self.isBankrupt = False
+
         self.playerBanner = PlayerBanner(screen, self)
         self.playerPiece = playerPiece(screen, self)
     
@@ -93,18 +95,15 @@ class Player:
             if self.jailTurns >= 2:
                 self.jailTurns = 0
                 #TODO: special case bankruptcy
-                if self.money >= 50:
-                    self.money -= 50
-                    self.inJail = False
-                    self.move(diceSet.getValue())
+                self.payBail()
+                self.move(diceSet.getValue())
             else:
                 self.jailTurns += 1
 
     def payBail(self):
-        if self.money >= 50:
-            self.money -= 50
-            self.inJail = False
-            self.jailTurns = 0
+        self.charge(50)
+        self.inJail = False
+        self.jailTurns = 0
 
     def giveTurn(self):
         self.isTurn = True
@@ -113,19 +112,63 @@ class Player:
         self.isTurn = False
 
     def charge(self, amount):
+        print(f"Charging {amount} Player has {self.money}")
         if self.money >= amount:
             self.money -= amount
         else:
-            self.money = 0
-            #TODO: special case bankruptcy
+            print("Insufficient funds")
+            self.handleBankrupt(amount)
+
+    def handleBankrupt(self, amount):
+        print(f"Enter bank func: {self.money}")
+        while self.money < amount:
+            if len(self.buildings.keys()) > 0:
+                if self.buildings[next(iter(self.buildings))] > 0:
+                    self.sellHouse(self.buildings[next(iter(self.buildings))])
+                    print(f"House sold: {self.money}")
+                else:
+                    self.buildings.pop(self.buildings.keys()[0])
+            elif len(self.properties) > 0:
+                for prop in self.properties:
+                    if not prop.isMortgage:
+                        self.mortgageProperty(prop)
+                        print(f"Prop Mortgaged: {self.money}")
+                        break
+            else:
+                self.bankrupt = True
+                self.money = 0
+                break
+
+        print(f"Before Charge: {self.money}")
+        #if not self.isBankrupt:
+            #self.charge(amount)     
+        #print(f"After Charge: {self.money}")    
+        
+       
 
     def build(self, prop):
         if prop not in self.buildings.keys():
             self.buildings[prop] = 0
         if self.buildings[prop] < 5 and self.money >= prop.buildCost:
-            self.buildings[prop] += 1
-            prop.numHouses += 1
-            self.charge(prop.buildCost)
+            if prop.builtEvenly(self):
+                self.buildings[prop] += 1
+                prop.numHouses += 1
+                self.charge(prop.buildCost)
+
+    def sellHouse(self, prop):
+        if prop in self.buildings.keys():
+            if self.buildings[prop] > 0:
+                self.buildings[prop] -= 1
+                prop.numHouses -= 1
+                self.money += prop.buildCost // 2
+            
+            if self.buildings[prop] == 0:
+                self.buildings.pop(prop)
+
+    def mortgageProperty(self, prop):
+        if prop in self.properties:
+            prop.isMortgaged = True
+            self.money += prop.mortgagePrice
 
     def getColorSets(self):
         colorSets = []

@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 game = Game(screen)
 
 # Run Game
-game.loop()
+game.testLoop()
 
 # Quit Pygame
 pygame.quit()

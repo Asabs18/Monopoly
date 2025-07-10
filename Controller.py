@@ -7,6 +7,7 @@ from Dice import *
 from Cards import *
 from Properties import *
 from BuildMenu import *
+from TradeMenu import *
 
 from Assets.numAssets.colorAssets import *
 from Assets.numAssets.displayAssets import *
@@ -39,6 +40,9 @@ class Game:
 
         #Home Building
         self.buildMenu = BuildMenu(self.screen)
+
+        #Trading
+        self.tradeMenu = TradeMenu(self.screen)
 
         #List of all players and current turn player
         self.players = []
@@ -92,6 +96,17 @@ class Game:
         self.boardSpaces.properties["Connecticut Avenue"].buy(self.players[0])
         self.boardSpaces.properties["Vermont Avenue"].buy(self.players[0])
         self.boardSpaces.properties["Oriental Avenue"].buy(self.players[0])
+
+        self.boardSpaces.properties["Marvin Gardens"].buy(self.players[0])
+        self.boardSpaces.properties["Pennsylvania Railroad"].buy(self.players[0])
+
+        self.boardSpaces.properties["States Avenue"].buy(self.players[1])
+        self.boardSpaces.properties["St. Charles Place"].buy(self.players[1])
+        self.boardSpaces.properties["Virginia Avenue"].buy(self.players[1])
+
+        self.boardSpaces.properties["Boardwalk"].buy(self.players[1])
+
+
 
         self.start()
 
@@ -150,18 +165,24 @@ class Game:
                     if self.buildMenu.closeBtn.isClicked(pygame.mouse.get_pos()):
                         self.buildMenu.closeBtnAction()
                     self.buildMenu.checkBtnClicks(self.currTurn, pygame.mouse.get_pos())
+                if self.tradeMenu.activateBtn.isClicked(pygame.mouse.get_pos()):
+                    self.tradeMenu.activateBtnAction()
+                if self.tradeMenu.displayWin:
+                    if self.tradeMenu.closeBtn.isClicked(pygame.mouse.get_pos()):
+                        self.tradeMenu.closeBtnAction()
+                    self.tradeMenu.checkBtnClicks(self.currTurn, pygame.mouse.get_pos())
                 if isinstance(self.currTurnLoc, Property):
                     if self.currTurnLoc.auction != None:
                         if self.currTurnLoc.auction.bidBtn.isClicked(pygame.mouse.get_pos()):
                             self.currTurnLoc.auction.bidBtnAction()
                         elif self.currTurnLoc.auction.withdrawBtn.isClicked(pygame.mouse.get_pos()):
                             self.currTurnLoc.auction.withdrawBtnAction()
-                if self.currTurnLoc.canBuy(self.currTurn):
                     if self.currTurnLoc.buyBtn.isClicked(pygame.mouse.get_pos()):
-                        self.currTurnLoc.buyBtnAction(self.currTurn)
+                        if self.currTurnLoc.canBuy(self.currTurn):
+                            self.currTurnLoc.buyBtnAction(self.currTurn)
                     elif self.currTurnLoc.auctionBtn.isClicked(pygame.mouse.get_pos()):
                         self.currTurnLoc.auctionBtnAction(self.players)
-                elif isinstance(self.currTurnLoc, FreeParking) or isinstance(self.currTurnLoc, GoToJail):
+                if isinstance(self.currTurnLoc, FreeParking) or isinstance(self.currTurnLoc, GoToJail):
                     if self.currTurnLoc.okBtn.isClicked(pygame.mouse.get_pos()):
                         self.currTurnLoc.okBtnAction(self.currTurn)
                 elif isinstance(self.currTurnLoc, Card):
@@ -261,6 +282,9 @@ class Game:
         self.diceRolled = False
         self.displayDice = self.doDisplayDice()
 
+        if self.currTurn.isBankrupt:
+            self.updateTurn(self)
+
     def start(self):
         self.startupWindow.isStartup = False
         self.pickStartTurn()
@@ -306,6 +330,7 @@ class Game:
 
         if self.currTurn != None:
             self.buildMenu.display(self.players, self.currTurn)
+            self.tradeMenu.display(self.players, self.currTurn)
 
         #Display auction if running
         for prop in self.boardSpaces.properties.values():
