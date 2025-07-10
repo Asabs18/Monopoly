@@ -1,0 +1,355 @@
+# Monopoly Game .gitignore
+
+# ==============================================================================
+# Python
+# ==============================================================================
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Virtual environments
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+monopoly-env/
+
+# Pipenv
+Pipfile.lock
+
+# Poetry
+poetry.lock
+
+# pyenv
+.python-version
+
+# pipenv
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# PyCharm
+#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
+#  be added to the global gitignore or merged into this file.  For a more nuclear
+#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
+.idea/
+
+# ==============================================================================
+# Game-Specific Files
+# ==============================================================================
+
+# Game saves and user data
+saves/
+savegames/
+*.save
+*.sav
+player_data/
+user_config/
+
+# Game logs
+logs/
+*.log
+debug.txt
+crash_reports/
+
+# Screenshots and recordings
+screenshots/
+recordings/
+*.png
+*.jpg
+*.jpeg
+# But keep asset images!
+!Assets/
+!Assets/**/*.png
+!Assets/**/*.jpg
+!Assets/**/*.jpeg
+
+# Temporary game files
+temp/
+tmp/
+cache/
+
+# High scores and player statistics
+highscores.txt
+stats.txt
+leaderboard.dat
+
+# ==============================================================================
+# Development Tools
+# ==============================================================================
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ==============================================================================
+# Operating System
+# ==============================================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# Pygame Specific
+# ==============================================================================
+
+# Pygame cache
+.pygame_cache/
+
+# Audio files that might be generated
+*.wav
+*.mp3
+*.ogg
+# But keep asset sounds!
+!Assets/
+!Assets/**/*.wav
+!Assets/**/*.mp3
+!Assets/**/*.ogg
+
+# ==============================================================================
+# Documentation and Notes
+# ==============================================================================
+
+# Personal notes (keep shared docs)
+notes.txt
+todo.txt
+personal_notes/
+scratch/
+
+# Generated documentation
+docs/_build/
+docs/site/
+
+# ==============================================================================
+# Testing and Coverage
+# ==============================================================================
+
+# pytest
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# ==============================================================================
+# Database and Data Files
+# ==============================================================================
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# CSV data files (unless they're assets)
+*.csv
+# Keep asset CSVs
+!Assets/**/*.csv
+
+# JSON data files (unless they're config)
+game_data.json
+user_data.json
+# Keep config JSONs
+!config.json
+!settings.json
+
+# ==============================================================================
+# Backup Files
+# ==============================================================================
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+backup/
+backups/
+
+# ==============================================================================
+# Compiled Game Builds
+# ==============================================================================
+
+# PyInstaller builds
+build/
+dist/
+*.exe
+*.app
+*.dmg
+*.deb
+*.rpm
+
+# Nuitka builds
+*.build/
+*.dist/
+
+# ==============================================================================
+# Dependencies and Package Managers
+# ==============================================================================
+
+# npm (if you use any web-based tools)
+node_modules/
+package-lock.json
+
+# Yarn
+yarn.lock
+
+# ==============================================================================
+# Miscellaneous
+# ==============================================================================
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Lock files
+*.lock
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large media files (unless they're game assets)
+*.mp4
+*.mkv
+*.avi
+# Keep asset videos
+!Assets/**/*.mp4
+
+# Configuration overrides
+local_settings.py
+local_config.py
