@@ -1,3 +1,14 @@
+"""
+Monopoly Game Player Banner Component Module
+
+This module implements a player information banner component for the Monopoly game UI.
+The PlayerBanner class displays player details including name, money, and game piece
+in a colored banner with turn highlighting and position-based coordinate mapping for
+multi-player layouts.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 from src.config.displayAssets import *

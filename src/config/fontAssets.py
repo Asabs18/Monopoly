@@ -1,3 +1,14 @@
+"""
+Monopoly Font Assets Module
+
+This module initializes and manages all font assets used throughout the Monopoly game.
+It loads custom fonts for various UI components, such as player names, property titles,
+buttons, and auction cards. Includes graceful fallback to default fonts when custom files are missing.
+
+Author: Aidan Sabatini
+"""
+
+
 import pygame
 
 from  src.config.displayAssets import *

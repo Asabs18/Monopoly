@@ -1,3 +1,14 @@
+"""
+Monopoly Game Card Actions Module
+
+This module implements the card action systems for Chance and Community Chest cards
+in the Monopoly game. The ChanceActions and ComChestActions classes handle the 
+execution of card effects including player movement, money transactions, jail 
+operations, and property-related actions based on card IDs.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 pygame.init()

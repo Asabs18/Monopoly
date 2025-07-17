@@ -1,3 +1,13 @@
+"""
+Monopoly Image Assets Module
+
+This module loads, scales, and manages all image assets used throughout the Monopoly game.
+It includes board images, dice faces, player piece images, and card images for various game elements.
+All images are loaded and transformed for use in the game's UI and logic.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 from src.config.displayAssets import *

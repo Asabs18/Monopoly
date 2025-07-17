@@ -1,3 +1,13 @@
+"""
+Monopoly Game Text Input Component Module
+
+This module implements a text input box component for the Monopoly game UI.
+The TextBox class provides an interactive text field with cursor blinking,
+keyboard input handling, click activation, and visual feedback for user
+text entry operations.
+
+Author: Aidan Sabatini
+"""
 import pygame
 
 from src.config.colorAssets import *

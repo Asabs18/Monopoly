@@ -1,3 +1,14 @@
+"""
+Monopoly Game Startup Window Component Module
+
+This module implements the initial player setup window for the Monopoly game.
+The StartupWindow class provides a user interface for adding players with name
+input, piece selection, and game initialization controls including interactive
+buttons and visual feedback for piece selection.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 from src.config.displayAssets import *

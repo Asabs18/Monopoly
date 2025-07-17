@@ -1,3 +1,14 @@
+"""
+Monopoly Game Helper Utilities Module
+
+This module provides utility functions for rendering and drawing operations in the 
+Monopoly game UI. It includes text rendering functions for single and multi-line 
+text display, and advanced drawing functions for creating rounded rectangles with 
+anti-aliased corners using pygame graphics.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 pygame.init()

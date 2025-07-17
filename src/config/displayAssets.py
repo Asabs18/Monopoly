@@ -1,3 +1,14 @@
+"""
+Monopoly Display Assets Configuration
+
+This module defines all screen-relative constants for rendering the Monopoly game.
+It includes dimension calculations, positioning for UI elements (buttons, labels, dice, player pieces),
+as well as dynamic layout data for in-game windows like property purchase, auctions, jail, and trading.
+
+Author: Aidan Sabatini
+"""
+
+
 import pygame
 
 pygame.init()
@@ -11,12 +22,18 @@ COMPUTER_WIDTH = info.current_w
 COMPUTER_HEIGHT = info.current_h
 
 #screen width/height
-SCREEN_WIDTH = COMPUTER_WIDTH
-SCREEN_HEIGHT = COMPUTER_HEIGHT
+#SCREEN_WIDTH = COMPUTER_WIDTH
+#SCREEN_HEIGHT = COMPUTER_HEIGHT
 
 #alt width/height (For dynamic sizing testing)
-#SCREEN_WIDTH = 720
-#SCREEN_HEIGHT = 500
+if COMPUTER_WIDTH > 1800:
+    SCREEN_WIDTH = 1800
+else:
+    SCREEN_WIDTH = COMPUTER_WIDTH
+if COMPUTER_HEIGHT > 1200:
+    SCREEN_HEIGHT = 1200
+else:
+    SCREEN_HEIGHT = COMPUTER_HEIGHT
 
 
 # --- BOARD DIMENSIONS ---

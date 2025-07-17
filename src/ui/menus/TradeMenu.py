@@ -1,3 +1,14 @@
+"""
+Monopoly Game Trade Menu Component Module
+
+This module implements the property trading interface for the Monopoly game.
+The TradeMenu class provides a user interface for initiating trades between
+players, including player selection, property exchange management, and
+trade negotiation controls with visual feedback and interactive buttons.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 from src.ui.components.Button import *

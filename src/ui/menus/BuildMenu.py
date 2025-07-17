@@ -1,3 +1,14 @@
+"""
+Monopoly Game Building Menu Component Module
+
+This module implements the property building interface for the Monopoly game.
+The BuildMenu class provides a user interface for managing house and hotel
+construction on owned properties, including visual property displays, build/sell
+buttons, and on-board house/hotel rendering for eligible color sets.
+
+Author: Aidan Sabatini
+"""
+
 import pygame
 
 from src.game.Properties import *

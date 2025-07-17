@@ -1,3 +1,13 @@
+"""
+Monopoly Game Board Assets Module
+
+This module contains all the static data and coordinates for the Monopoly board game.
+Includes property definitions, board positions, rent calculations, pricing structures,
+and visual positioning data for players, houses, and property ownership tags.
+
+Author: Aidan Sabatini
+"""
+
 # Define colors
 WHITE = (255, 255, 255)
 
